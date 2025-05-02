@@ -3,10 +3,8 @@ const router = express.Router();
 const passport = require('passport');
 const Task = require('../models/Task');
 require('../middleware/auth');
-// Middleware to protect routes
 const auth = passport.authenticate('jwt', { session: false });
 
-// Create task
 router.post('/', auth, async (req, res) => {
   try {
     const { name, description } = req.body;
@@ -21,7 +19,6 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
-// Get user's tasks
 router.get('/', auth, async (req, res) => {
   try {
     const tasks = await Task.find({ user: req.user._id });
@@ -31,7 +28,6 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// Update task status
 router.put('/:taskId/status', auth, async (req, res) => {
   try {
     const { status } = req.body;
@@ -52,7 +48,6 @@ router.put('/:taskId/status', auth, async (req, res) => {
   }
 });
 
-// Delete task
 router.delete('/:taskId', auth, async (req, res) => {
   try {
     const task = await Task.findOneAndDelete({
